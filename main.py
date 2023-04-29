@@ -1,5 +1,6 @@
 import coder
 
+
 '''
 Пример работы достаточно низкоуровневых подпрограмм
 (работают не с пакетами, а просто со строками) из модуля coder
@@ -11,7 +12,7 @@ print(dec[0])
 coder.DEBUG_check_correctness(enc, dec)
 
 '''
-А теперь изказим один бит 
+А теперь иcказим один бит 
 '''
 enc[0][6] = 1
 dec = coder.decode(enc[0])
@@ -27,7 +28,7 @@ coder.DEBUG_check_correctness(enc, dec)
 initial_message = "Hello! Russia is the biggest country in the world. It is wached by several oceans. 1234567890"
 print('Исходное сообщение:\n%s' % initial_message)
 enc_message = coder.encode_packages(initial_message, 10)
-# print(enc_message)
+#print(enc_message)
 '''
 а теперь немного исказим сообщение enc_message
 '''
@@ -35,7 +36,35 @@ enc_message[1][0][35] = not enc_message[1][0][35]
 enc_message[3][0][8] = not enc_message[3][0][8]
 
 dec_message = coder.decode_packages(enc_message)
-# print(dec_message)
+#print(dec_message)
+print('Декодированное сообщение:\n%s' % ''.join(''.join(each[0]) for each in dec_message))
+
+error_list = coder.find_wrong_packages(dec_message)
+if len(error_list) == 0:
+    print('Ошибок при передаче данных не было')
+else:
+    print('Ошибки в следующих номерах пакетов:',error_list)
+
+'''
+суем текст в пакеты
+'''
+initial_message = "Hi man. How are u?"
+print('Исходное сообщение:\n%s' % initial_message)
+enc_message = coder.encode_packages(initial_message, 10)
+
+'''
+генерируем поток ошибок основываясь на исходных пакетах данных, по умолчанию вероятность ошибок 10%
+'''
+flow_errors = coder.generate_error_flow_from_packages(enc_message, 0.01)
+print(flow_errors)
+
+'''
+накладываем поток ошибок на исходные пакеты
+'''
+enc_message = coder.improse_errors_on_data(enc_message, flow_errors)
+
+dec_message = coder.decode_packages(enc_message)
+#print(dec_message)
 print('Декодированное сообщение:\n%s' % ''.join(''.join(each[0]) for each in dec_message))
 
 error_list = coder.find_wrong_packages(dec_message)
