@@ -47,7 +47,7 @@ import errors
 #     print('Ошибки в следующих номерах пакетов:',error_list)
 
 
-for i in range(1, 3):
+for i in range(1, 4):
     '''
     суем текст в пакеты
     '''
@@ -65,7 +65,10 @@ for i in range(1, 3):
     elif i == 2:
         print("ИСПОЛЬЗУЕМ МОДЕЛЬ ГИЛЬБЕРТА")
         flow_errors = errors.generate_hilbert_error_flow_from_packages(enc_message, 0.1, 0.95, 0.8)
-    print(flow_errors.tolist())
+    elif i == 3:
+        print("ИСПОЛЬЗУЕМ МОДЕЛЬ ПУРТОВА")
+        flow_errors = errors.generate_purtova_error_flow_from_packages(enc_message, 0.3, 0.9)
+    print(len(flow_errors), flow_errors.tolist())
 
     '''
     накладываем поток ошибок на исходные пакеты
@@ -81,3 +84,4 @@ for i in range(1, 3):
         print('Ошибок при передаче данных не было')
     else:
         print('Ошибки в следующих номерах пакетов:',error_list)
+

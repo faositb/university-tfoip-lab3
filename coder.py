@@ -63,7 +63,7 @@ def decode(bit_list):
         result_list.append(chr(char_result))
         char_result = 0
         codec = 64
-    return (result_list, zlib.crc32(''.join(result_list).encode('utf-8')))
+    return result_list, zlib.crc32(''.join(result_list).encode('utf-8'))
 
 
 def find_wrong_packages(dec_message):
