@@ -1,5 +1,4 @@
 import zlib
-import numpy as np
 
 
 def encode_packages(received_str, chars_count):
@@ -86,41 +85,3 @@ def DEBUG_check_correctness(encoder_list, decoder_list):
         print('Сообщение не было искажено')
     else:
         print('Сообщение исказилось при передаче')
-
-
-def generate_error_flow_from_string(message, error_probability=0.1):
-    """
-    Генерация потока ошибок основываясь на полученном сообщение
-    :param message: Полученное сообщение
-    :param error_probability: Настройка вероятности получения ошибки
-    :return: Поток ошибок
-    """
-    len_message = len(message) * 7
-    return (np.random.rand(len_message) > 1 - error_probability).astype(int)
-
-
-def generate_error_flow_from_packages(received_packages, error_probability=0.1):
-    """
-    Генерация потока ошибок основываясь на полученных пакетах
-    :param received_packages: Полученные пакеты
-    :param error_probability: Настройка вероятности получения ошибки
-    :return: Поток ошибок
-    """
-    count_bit_in_packages = sum([len(x[0]) for x in received_packages])
-    return (np.random.rand(count_bit_in_packages) > 1 - error_probability).astype(int)
-
-def improse_errors_on_data(received_packages, received_error_flow):
-    """
-    Накладывается поток ошибок на пакеты данных
-    :param received_packages:
-    :param received_error_flow:
-    :return: Возвращаем пакеты с ошибками
-    """
-    k = 0
-    for el_package in range(len(received_packages)):
-        for code_msg in range(len(received_packages[el_package][0])):
-            if received_error_flow[k]:
-                a = received_packages[el_package][0][code_msg]
-                received_packages[el_package][0][code_msg] = 1 - received_packages[el_package][0][code_msg]
-            k += 1
-    return received_packages
