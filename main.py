@@ -67,7 +67,7 @@ for i in range(1, 4):
         flow_errors = errors.generate_hilbert_error_flow_from_packages(enc_message, 0.1, 0.95, 0.8)
     elif i == 3:
         print("ИСПОЛЬЗУЕМ МОДЕЛЬ ПУРТОВА")
-        flow_errors = errors.generate_purtova_error_flow_from_packages(enc_message, 0.3, 0.9)
+        flow_errors = errors.generate_purtova_error_flow_from_packages(enc_message, 0.3, 0.8)#1e100, 2e100)
     print(len(flow_errors), flow_errors.tolist())
 
     '''

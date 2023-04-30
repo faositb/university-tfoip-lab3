@@ -103,9 +103,12 @@ def generate_purtova_error_flow_from_packages(received_packages, err_probability
     for i_package in received_packages:
         len_package = len(i_package[0])
         err_probability_package = rt.uniform(err_probability_low, err_probability_high)
-        list_err_probability = div_probability_package(err_probability_package, len_package)
-        for j_err_probability in rt.sample(list_err_probability, len(list_err_probability)):
-            err_flow.append(1 if rt.uniform(0, 1) < j_err_probability else 0)
+        if err_probability_package > 1:
+            [err_flow.append(1) for x in range(len_package)]
+        else:
+            list_err_probability = div_probability_package(err_probability_package, len_package)
+            for j_err_probability in rt.sample(list_err_probability, len(list_err_probability)):
+                err_flow.append(1 if rt.uniform(0, 1) < j_err_probability else 0)
     return np.array(err_flow)
 
 
@@ -113,6 +116,7 @@ def generate_purtova_error_flow_from_packages(received_packages, err_probability
 """
 Общие и вспомогательные подпрограммы
 """
+
 
 def div_probability_package(received_num,received_length_packages):
     """
@@ -123,8 +127,9 @@ def div_probability_package(received_num,received_length_packages):
     """
     probability_each_bit = []
     for idx in range(received_length_packages - 1):
-        probability_each_bit.append(rt.uniform(0, received_num - sum(probability_each_bit)))
+        probability_each_bit.append(rt.uniform(1e-20, received_num - sum(probability_each_bit)))
     probability_each_bit.append(received_num - sum(probability_each_bit))
+    probability_each_bit[-1] = 1e-20
     return probability_each_bit
 def improse_errors_on_data(received_packages, received_error_flow):
     """
