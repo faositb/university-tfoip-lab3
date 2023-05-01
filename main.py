@@ -1,7 +1,6 @@
 import coder
 import errors
 import specifications
-from matplotlib import pyplot as plot
 
 
 '''
@@ -82,6 +81,7 @@ for i in range(1, 4):
     print('Декодированное сообщение:\n%s' % ''.join(''.join(each[0]) for each in dec_message))
 
     error_list = coder.find_wrong_packages(dec_message)
+    specifications.draw_distorted_blocks_intervals(error_list, dec_message, errors.Error_model_type(i))
     if len(error_list) == 0:
         print('Ошибок при передаче данных не было')
     else:

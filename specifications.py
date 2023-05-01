@@ -4,6 +4,13 @@ import numpy as np
 
 
 def draw_flow_errors_intervals(flow_err, type_model, len_interval=10):
+    """
+    Рисуем информацию о том, сколько ошибок в том или ином пакете
+    :param flow_err: Поток ошибок
+    :param type_model: То по какой модели был создан поток ошибок
+    :param len_interval: Количество символов в одном пакете (чтоб длина в битах умножаем на 7)
+    :return: ничего важного не возвращаем, только график строим
+    """
     err_in_each_package = []
     flow_err = flow_err.tolist()
     len_interval *= 7
@@ -22,17 +29,28 @@ def draw_flow_errors_intervals(flow_err, type_model, len_interval=10):
     plt.show()
     return err_in_each_package
 
-'''
-не доделано, славка ушел завтракать
-'''
-def draw_distorted_blocks_intervals(list_err_package, type_model):
-    indexes = np.arange(len(list_err_package))
+
+def draw_distorted_blocks_intervals(list_err_package, dec_message, type_model, len_interval=10):
+    """
+    Рисуем информацию, какие пакеты информации были повреждены
+    :param list_err_package: Номера пакетов с ошибками
+    :param dec_message: Сообщение (в данном случае раскодировано,
+     но тут не важно, нужно было просто получить количество пакетов
+    :param type_model: То по какой модели был создан поток ошибок
+    :param len_interval: Количество символов в одном пакете (чтоб длина в битах умножаем на 7)
+    :return: ничего не возвращаем, только график строим
+    """
     presence_errors = []
-    plt.bar(indexes, list_err_package)
+    count_package = len(dec_message)
+    for i in range(count_package):
+        presence_errors.append(1) if i in list_err_package else presence_errors.append(0)
+    indexes = np.arange(len(presence_errors))
+    plt.bar(indexes, presence_errors)
     plt.xticks(indexes)
+    plt.yticks([0, 1], ['NO', 'YES'])
     plt.xlabel("Номера пакетов")
     plt.ylabel('Наличие ошибок')
-    plt.title(type_model)
+    plt.title(f'Информационный поток после {type_model}')
     plt.show()
 
 
