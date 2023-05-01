@@ -1,5 +1,7 @@
 import coder
 import errors
+import specifications
+from matplotlib import pyplot as plot
 
 
 '''
@@ -46,7 +48,7 @@ import errors
 # else:
 #     print('Ошибки в следующих номерах пакетов:',error_list)
 
-
+flow_errors = 0
 for i in range(1, 4):
     '''
     суем текст в пакеты
@@ -67,9 +69,9 @@ for i in range(1, 4):
         flow_errors = errors.generate_hilbert_error_flow_from_packages(enc_message, 0.1, 0.95, 0.8)
     elif i == 3:
         print("ИСПОЛЬЗУЕМ МОДЕЛЬ ПУРТОВА")
-        flow_errors = errors.generate_purtova_error_flow_from_packages(enc_message, 0.3, 0.8)#1e100, 2e100)
+        flow_errors = errors.generate_purtova_error_flow_from_packages(enc_message, 0.8, 0.95)#1e100, 2e100)
     print(len(flow_errors), flow_errors.tolist())
-
+    specifications.draw_flow_errors_intervals(flow_errors, errors.Error_model_type(i))
     '''
     накладываем поток ошибок на исходные пакеты
     '''
