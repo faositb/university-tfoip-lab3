@@ -52,7 +52,7 @@ for i in range(1, 4):
     '''
     суем текст в пакеты
     '''
-    initial_message = "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do."
+    initial_message = "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do. Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do."
     print('Исходное сообщение:\n%s' % initial_message)
     enc_message = coder.encode_packages(initial_message, 10)
 
@@ -62,7 +62,7 @@ for i in range(1, 4):
     flow_errors = None
     if i == 1:
         print("ИСПОЛЬЗУЕМ БИНОМИАЛЬНУЮ МОДЕЛЬ")
-        flow_errors = errors.generate_binomial_error_flow_from_packages(enc_message, 0.1)
+        flow_errors = errors.generate_binomial_error_flow_from_packages(enc_message, 0.05)
     elif i == 2:
         print("ИСПОЛЬЗУЕМ МОДЕЛЬ ГИЛЬБЕРТА")
         flow_errors = errors.generate_hilbert_error_flow_from_packages(enc_message, 0.1, 0.95, 0.8)
@@ -82,6 +82,12 @@ for i in range(1, 4):
 
     error_list = coder.find_wrong_packages(dec_message)
     specifications.draw_distorted_blocks_intervals(error_list, dec_message, errors.Error_model_type(i))
+    print("Вероятность неправильного приема 1 бита данных = %.3f" % specifications.probability_receiving_wrong_bit(flow_errors))
+    print("Вероятность неправильного приема символа p = %.3f" % specifications.probability_receiving_wrong_symbol(initial_message, ''.join(''.join(each[0]) for each in dec_message)))
+    print("Вероятность неправильного приема блока длиной 10 символов = %.3f" % specifications.probability_receiving_wrong_block(initial_message, flow_errors, 10))
+    print("Коэффициент группирования ошибок = %.3f" % specifications.group_coefficient(flow_errors, 10))
+
+
     if len(error_list) == 0:
         print('Ошибок при передаче данных не было')
     else:

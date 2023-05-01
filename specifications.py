@@ -54,3 +54,52 @@ def draw_distorted_blocks_intervals(list_err_package, dec_message, type_model, l
     plt.show()
 
 
+def probability_receiving_wrong_bit(flow_errors):
+    """
+    Расчёт вероятности ошибки/неправильного приема символа p
+    """
+    return (np.count_nonzero(flow_errors) / len(flow_errors))
+
+
+def probability_receiving_wrong_symbol(input_string, decoded_string):
+    """
+    Расчёт вероятности ошибки/неправильного приема символа p
+    """
+    p = 0
+    for i in range(len(input_string)):
+        if input_string[i] != decoded_string[i]:
+            p += 1;
+    return (p / len(input_string))
+
+
+def group_coefficient(flow_errors, block_length):
+    """
+    расчёт коэффициента группирования для блока длиной block_length символов
+    """
+    count = 0
+    for i in range(0, len(flow_errors), block_length * 7):
+        if np.count_nonzero(flow_errors[i : i + block_length * 7]):
+            count += 1
+    return (np.log(np.count_nonzero(flow_errors)) - np.log(count)) / np.log(block_length * 7)
+
+
+def probability_receiving_wrong_block(input_string, flow_errors, block_length):
+    """
+    Расчёт вероятности ошибки/неправильного приема блока длиной block_length символов
+    """
+    p = 0
+    counter = 0
+    for i in range(0, len(input_string), block_length):
+        if ((np.count_nonzero(flow_errors[i:i+block_length * 7])) != 0):
+            p += 1
+        counter += 1
+    return p / counter
+
+
+# def probability_receiving_wrong_block(input_string, error_list, block_length):
+#     """
+#     Расчёт вероятности ошибки/неправильного приема блока длиной block_length символов
+#     """
+#     return len(error_list) / (len(input_string) / block_length)   
+
+
