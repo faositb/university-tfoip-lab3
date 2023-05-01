@@ -46,9 +46,9 @@ def generate_hilbert_error_flow_from_packages(received_packages, err_probability
     """
     Генерация потока ошибок для пакетов на основе биномиального распределения
     :param received_packages: Полученные пакеты
-    :param error_probability: Вероятность ошибки в плохом состоянии
+    :param err_probability: Вероятность ошибки в плохом состоянии
     :param p00: Вероятность остаться в хорошем состоянии
-    :param p01: Вероятность остаться в плохом состоянии
+    :param p11: Вероятность остаться в плохом состоянии
     :return: Поток ошибок
     """
     channel = []
@@ -134,8 +134,8 @@ def div_probability_package(received_num,received_length_packages):
 def improse_errors_on_data(received_packages, received_error_flow):
     """
     Накладывается поток ошибок на пакеты данных
-    :param received_packages:
-    :param received_error_flow:
+    :param received_packages: Полученные пакеты данных
+    :param received_error_flow: Полученный поток ошибок
     :return: Возвращаем пакеты с ошибками
     """
     k = 0
