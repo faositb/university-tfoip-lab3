@@ -107,7 +107,7 @@ def main():
         elif resource_text == 3:
             initial_message = "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do. Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do."
         else:
-            exit()
+            break
 
         enc_message = coder.encode_packages(initial_message, 10)
 
@@ -137,11 +137,11 @@ def main():
             enc_message = coder.encode_packages(initial_message, 10)
             if f:
                 if k == 1:
-                    flow_errors = errors.generate_binomial_error_flow_from_packages(enc_message, 0.05)
+                    flow_errors = errors.generate_binomial_error_flow_from_packages(enc_message, 0.005)
                 elif k == 2:
-                    flow_errors = errors.generate_hilbert_error_flow_from_packages(enc_message, 0.1, 0.95, 0.8)
+                    flow_errors = errors.generate_hilbert_error_flow_from_packages(enc_message, 0.02, 0.99, 0.9)
                 elif k == 3:
-                    flow_errors = errors.generate_purtova_error_flow_from_packages(enc_message, 0.8, 0.95)
+                    flow_errors = errors.generate_purtova_error_flow_from_packages(enc_message, 0.05, 0.1)
             print('Исходное сообщение:\n%s' % initial_message)
             if f:
                 view_err_generate_flow = k
@@ -152,12 +152,12 @@ def main():
             print('Декодированное сообщение:\n%s' % ''.join(''.join(each[0]) for each in dec_message))
             error_list = coder.find_wrong_packages(dec_message)
             specifications.draw_distorted_blocks_intervals(error_list, dec_message, errors.Error_model_type(view_err_generate_flow))
-            print("Вероятность неправильного приема 1 бита данных = %.3f" % specifications.probability_receiving_wrong_bit(
+            print("Вероятность неправильного приема 1 бита данных = %.7f" % specifications.probability_receiving_wrong_bit(
                 flow_errors))
-            print("Вероятность неправильного приема символа p = %.3f" % specifications.probability_receiving_wrong_symbol(
+            print("Вероятность неправильного приема символа p = %.7f" % specifications.probability_receiving_wrong_symbol(
                 initial_message, ''.join(''.join(each[0]) for each in dec_message)))
             print(
-                "Вероятность неправильного приема блока длиной 10 символов = %.3f" % specifications.probability_receiving_wrong_block(
+                "Вероятность неправильного приема блока длиной 10 символов = %.7f" % specifications.probability_receiving_wrong_block(
                     initial_message, flow_errors, 10))
             print("Коэффициент группирования ошибок = %.3f" % specifications.group_coefficient(flow_errors, 10))
 

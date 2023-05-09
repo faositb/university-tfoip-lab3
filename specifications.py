@@ -77,10 +77,10 @@ def group_coefficient(flow_errors, block_length):
     Расчёт коэффициента группирования для блока длиной block_length символов
     """
     count = 0
-    for i in range(0, len(flow_errors), block_length * 7):
+    for i in range(0, len(flow_errors), block_length):
         if np.count_nonzero(flow_errors[i : i + block_length * 7]):
             count += 1
-    return (np.log(np.count_nonzero(flow_errors)) - np.log(count)) / np.log(block_length * 7)
+    return abs((np.log(np.count_nonzero(flow_errors)) - np.log(count)) / np.log(block_length * 7))
 
 
 def probability_receiving_wrong_block(input_string, flow_errors, block_length):

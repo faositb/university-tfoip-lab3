@@ -28,7 +28,7 @@ class Error_model_type(Enum):
 #     return (np.random.rand(len_message) > 1 - error_probability).astype(int)
 
 
-def generate_binomial_error_flow_from_packages(received_packages, error_probability=0.1):
+def generate_binomial_error_flow_from_packages(received_packages, error_probability=0.005):
     """
     Генерация потока ошибок для пакетов на основе биномиального распределения
     :param received_packages: Полученные пакеты
@@ -91,7 +91,7 @@ def generate_hilbert_error_flow_from_packages(received_packages, err_probability
 Модель Пуртова
 '''
 
-def generate_purtova_error_flow_from_packages(received_packages, err_probability_low=0.1, err_probability_high=0.5):
+def generate_purtova_error_flow_from_packages(received_packages, err_probability_low=0.05, err_probability_high=0.1):
     """
     Генерация потока ошибок для пакетов на основе модели Пуртова
     :param received_packages: Полученные пакеты
@@ -131,6 +131,7 @@ def div_probability_package(received_num,received_length_packages):
     probability_each_bit.append(received_num - sum(probability_each_bit))
     probability_each_bit[-1] = 1e-20
     return probability_each_bit
+
 def improse_errors_on_data(received_packages, received_error_flow):
     """
     Накладывается поток ошибок на пакеты данных
