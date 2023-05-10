@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
 
+import coder
 
 
 def draw_flow_errors_intervals(flow_err, type_model, len_interval=10):
@@ -102,4 +103,9 @@ def probability_receiving_wrong_block(input_string, flow_errors, block_length):
 #     """
 #     return len(error_list) / (len(input_string) / block_length)   
 
-
+def count_flow_rate(flow_with_err, flow_errs):
+    v_package = len(coder.find_wrong_packages(flow_with_err))
+    n_package = len(flow_with_err)
+    k_package = len(flow_errs)
+    a_package = 1
+    return k_package / ((k_package + 1) + a_package) * (n_package - v_package) / n_package

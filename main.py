@@ -160,7 +160,7 @@ def main():
                 "Вероятность неправильного приема блока длиной 10 символов = %.7f" % specifications.probability_receiving_wrong_block(
                     initial_message, flow_errors, 10))
             print("Коэффициент группирования ошибок = %.3f" % specifications.group_coefficient(flow_errors, 10))
-
+            print(f"Относительная скорость передачи канала: {specifications.count_flow_rate(dec_message, flow_errors):.7f}")
             if len(error_list) == 0:
                 print('Ошибок при передаче данных не было')
             else:
